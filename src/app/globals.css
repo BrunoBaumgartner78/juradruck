@@ -1,26 +1,71 @@
+/* src/app/globals.css */
+@config "../../tailwind.config.ts";
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ...dein restliches CSS (Animations, Prose, etc.) ... */
+
+
+/* ... dein restliches CSS unverändert ... */
+
+
+/* Animations */
+@keyframes fadeInQuick {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes floatY {
+  0% { transform: translateY(0) }
+  50% { transform: translateY(-6px) }
+  100% { transform: translateY(0) }
+}
+@keyframes drift {
+  0% { transform: translateX(0) rotate(0deg) }
+  50% { transform: translateX(4px) rotate(0.6deg) }
+  100% { transform: translateX(0) rotate(0deg) }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.animate-fadeInQuick { animation: fadeInQuick .5s ease-out forwards; }
+.animate-floatY { animation: floatY 6s ease-in-out infinite; }
+.animate-drift  { animation: drift 8s ease-in-out infinite; }
+.will-change-transform { will-change: transform; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Prose (Magenta, Gelb, Cyan) */
+.prose { max-width: 65ch; margin-inline: auto; line-height: 1.7; font-size: 1rem; color: #1a1a1a; }
+.prose h2,.prose h3 { font-weight: 800; margin: 2rem 0 1rem; line-height: 1.3; position: relative; }
+.prose h2 { font-size: 1.8rem; color: #d81b60; }
+.prose h3 { font-size: 1.4rem; color: #0097a7; }
+.prose h2::after { content:""; display:block; width:3rem; height:4px; background:linear-gradient(90deg,#d81b60,#fdd835,#0097a7); margin-top:.3rem; border-radius:2px; }
+.prose p { margin-bottom:1.2rem; }
+.prose strong { color:#d81b60; font-weight:700; }
+.prose a { color:#0097a7; text-decoration:underline; font-weight:500; }
+.prose a:hover { color:#fdd835; }
+.prose ul { list-style:disc; padding-left:1.5rem; margin:1rem 0; }
+.prose li { margin-bottom:.5rem; }
+.prose li::marker { color:#0097a7; }
+.prose blockquote { border-left:4px solid #fdd835; padding-left:1rem; font-style:italic; color:#555; background:rgba(253,216,53,.08); margin:1.5rem 0; }
+@media (max-width:768px){ .prose{ font-size:.95rem; padding:0 1rem;} .prose h2{ font-size:1.5rem;} .prose h3{ font-size:1.2rem;} }
+
+.dark .prose { color:#e5e7eb; }
+.dark .prose h2 { color:#f472b6; }
+.dark .prose h3 { color:#22d3ee; }
+.dark .prose strong { color:#f472b6; }
+.dark .prose a { color:#22d3ee; }
+.dark .prose a:hover { color:#fde047; }
+.dark .prose blockquote { color:#cbd5e1; background:rgba(253,224,71,.08); border-left-color:#fde047; }
+
+
+/* === Marquee / Referenzen-Banner === */
+@keyframes scroll-x {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-scroll-x {
+  display: flex;
+  width: max-content;
+  animation: scroll-x 40s linear infinite;
 }
