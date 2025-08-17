@@ -202,6 +202,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      
     </>
   )
 }
+console.log("SANITY PROJECT ID:", process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
