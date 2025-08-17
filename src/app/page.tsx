@@ -2,18 +2,12 @@
 import Link from "next/link"
 import Image from "next/image"
 import groq from "groq"
-import { sanityClient } from "@/lib/sanity.client"
+import { safeFetch } from "@/lib/sanity.client"
+import { miniGalleryQuery } from "@/lib/sanity.queries"
 import HeroParallaxBackground from "@/components/HeroParallaxBackground"
-import ReferencesBanner from "@/components/ReferencesBanner";
-import Testimonials from "@/components/Testimonials";
-import FAQ from "@/components/FAQ";
-import CatalogCards from "@/components/CatalogCards";
-import { safeFetch } from '@/lib/sanity.client'
-import { galleryQuery } from '@/lib/sanity.queries'
-
-const items = await safeFetch<GalleryItem[]>(galleryQuery, {}, [])
-
-
+import ReferencesBanner from "@/components/ReferencesBanner"
+import Testimonials from "@/components/Testimonials"
+import FAQ from "@/components/FAQ"
 
 type GalleryItem = {
   _id: string
@@ -24,12 +18,14 @@ type GalleryItem = {
 
 export const revalidate = 300
 
-const miniGalleryQuery = groq`*[_type == "galleryItem"] | order(publishedAt desc)[0...6]{
-  _id, title, category, "imageUrl": image.asset->url
-}`
-
 export default async function HomePage() {
-  const items = await sanityClient.fetch<GalleryItem[]>(miniGalleryQuery)
+  // Sanity-Aufruf sicher machen: liefert [] wenn ENV fehlt/Fehler
+  const items = await safeFetch<GalleryItem[]>(miniGalleryQuery, {}, [])
+
+  // Für Skelett-UI (falls items leer)
+  const gallery = items.length
+    ? items
+    : Array.from({ length: 3 }).map(() => null as unknown as GalleryItem | null)
 
   return (
     <>
@@ -51,72 +47,26 @@ export default async function HomePage() {
           <div className="container mx-auto max-w-7xl px-4 py-16 md:px-6">
             <div className="grid items-center gap-10 md:grid-cols-2">
               {/* Glass-Box */}
-             {/* Glass-Box – REPLACE this div in src/app/page.tsx */}
-<div
-  className="
-    rounded-2xl p-6 shadow-lg backdrop-blur-md ring-1
-    bg-white/85 ring-black/10
-    dark:bg-gray-900/75 dark:ring-white/10
-  "
->
-  <span
-    className="
-      inline-block rounded-full px-3 py-1 text-xs font-semibold
-      bg-indigo-100 text-indigo-900
-      dark:bg-indigo-900/40 dark:text-indigo-100
-    "
-  >
-    Textildruck • Werbetechnik • Fahrzeugbeschriftung
-  </span>
-
-  <h1
-    id="hero-heading"
-    className="
-      mt-4 text-4xl md:text-5xl font-extrabold tracking-tight
-      text-gray-900 dark:text-white
-    "
-  >
-    Präziser Druck & starke Beschriftung –{" "}
-    <span className="text-indigo-700 dark:text-indigo-300">für Arbeit & Werbung</span>
-  </h1>
-
-  <p className="mt-4 text-lg text-gray-700 dark:text-gray-200">
-    Von Workwear & Teamsport bis Carwrapping, Schaufenster & Werbetafeln –
-    wir produzieren langlebige Qualität und beraten dich persönlich.
-  </p>
-
-  <div className="mt-6 flex flex-wrap gap-3">
-    <Link
-      href="/kontakt"
-      className="
-        inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold shadow
-        bg-indigo-700 text-white hover:bg-indigo-800
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2
-        focus-visible:ring-offset-white
-        dark:bg-indigo-500 dark:hover:bg-indigo-600
-        dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950
-      "
-    >
-      Offerte anfragen
-    </Link>
-    <Link
-      href="/downloads"
-      className="
-        inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold shadow-sm
-        border bg-white text-gray-900 hover:bg-fuchsia-600 hover:text-white
-        border-gray-300
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2
-        focus-visible:ring-offset-white
-        dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100
-        dark:hover:bg-fuchsia-600 dark:hover:text-white
-        dark:focus-visible:ring-fuchsia-400 dark:focus-visible:ring-offset-gray-950
-      "
-    >
-      Katalog & Preislisten
-    </Link>
-  </div>
-</div>
-
+              <div className="rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur-md ring-1 ring-black/5 dark:bg-gray-900/70 dark:ring-white/10">
+                <span className="inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200">
+                  Textildruck • Werbetechnik • Fahrzeugbeschriftung
+                </span>
+                <h1 id="hero-heading" className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl dark:text-white">
+                  Präziser Druck & starke Beschriftung –{" "}
+                  <span className="text-indigo-700 dark:text-indigo-400">für Arbeit & Werbung</span>
+                </h1>
+                <p className="mt-4 text-lg text-gray-700 dark:text-gray-200">
+                  Von Workwear & Teamsport bis Carwrapping, Schaufenster & Werbetafeln – wir produzieren langlebige Qualität und beraten dich persönlich.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link href="/kontakt" className="rounded-lg w-50 bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:bg-indigo-900 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:active:bg-indigo-700 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950">
+                    Offerte anfragen
+                  </Link>
+                  <Link href="/downloads" className="rounded-lg w-50 border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-fuchsia-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:bg-fuchsia-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-fuchsia-600 dark:hover:text-white dark:active:bg-fuchsia-700 dark:focus-visible:ring-fuchsia-400 dark:focus-visible:ring-offset-gray-950">
+                    Katalog & Preislisten
+                  </Link>
+                </div>
+              </div>
 
               {/* Hero-Bild */}
               <div className="relative h-72 w-full overflow-hidden rounded-3xl border border-gray-200 shadow-card md:h-[420px] dark:border-gray-800">
@@ -153,16 +103,14 @@ export default async function HomePage() {
           </dl>
         </div>
       </section>
-     
 
       {/* Leistungen */}
       <section className="bg-gray-50 dark:bg-gray-900" aria-labelledby="services-heading" role="region">
         <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
           <h2 id="services-heading" className="text-2xl font-bold text-gray-900 dark:text-white">Unsere Leistungen</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { href: "/textildruck", title: "Textildruck", desc: "Stickerei, Siebdruck, Flex/Flock, Teamsport, Arbeitsbekleidung" },
-              { href: "/textilverkauf", title: "Textilverkauf", desc: "Arbeitsbekleidung, Sportbekleidung, Teamsport, Sicherheitsdienste" },
               { href: "/werbetechnik", title: "Werbetechnik", desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV-Druck, Sticker" },
               { href: "/fahrzeugbeschriftung", title: "Fahrzeugbeschriftung", desc: "Teilfolierung, Carwrapping, Flotte, LKW-Plane" },
             ].map((s) => (
@@ -191,19 +139,19 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(items?.length ? items : Array.from({ length: 3 })).map((g, i) => (
-              <figure key={(g as any)?._id ?? `ph-${i}`} className="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 shadow-card transition-colors dark:border-gray-800">
-                {g ? (
+            {gallery.map((g, i) => (
+              <figure key={(g as GalleryItem | null)?._id ?? `ph-${i}`} className="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 shadow-card transition-colors dark:border-gray-800">
+                {g && (g as GalleryItem).imageUrl ? (
                   <>
                     <Image
-                      src={(g as any).imageUrl}
-                      alt={(g as any).title}
+                      src={(g as GalleryItem).imageUrl}
+                      alt={(g as GalleryItem).title}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <figcaption className="absolute bottom-2 left-2 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 ring-1 ring-black/5 dark:bg-gray-900/90 dark:text-gray-100 dark:ring-white/10">
-                      {(g as any).category ?? "Projekt"}
+                      {(g as GalleryItem).category ?? "Projekt"}
                     </figcaption>
                   </>
                 ) : (
@@ -214,16 +162,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      {/* REFERENZEN-LAUFBAND */}
-<ReferencesBanner/>
 
-{/* TESTIMONIALS */}
-<Testimonials />
+      {/* Referenzen, Testimonials, FAQ */}
+      <ReferencesBanner />
+      <Testimonials />
+      <FAQ />
 
-{/* FAQ */}
-<FAQ />
-
-      {/* SEO-Teaser (kurz) */}
+      {/* SEO-Teaser */}
       <section className="bg-gray-50 dark:bg-gray-900" role="region" aria-labelledby="seo-teaser">
         <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6 prose prose-indigo dark:prose-invert">
           <h2 id="seo-teaser">Textildruck & Werbetechnik im Jura – Qualität seit über 10 Jahren</h2>
@@ -232,7 +177,7 @@ export default async function HomePage() {
           </p>
         </div>
       </section>
-<CatalogCards/>
+
       {/* CTA */}
       <section className="bg-indigo-700" aria-labelledby="cta-heading" role="region">
         <div className="container mx-auto max-w-7xl px-4 py-8 md:px-6">
