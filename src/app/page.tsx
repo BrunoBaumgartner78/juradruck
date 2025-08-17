@@ -1,13 +1,13 @@
 // src/app/page.tsx
 import Link from "next/link"
 import Image from "next/image"
-import groq from "groq"
 import { safeFetch } from "@/lib/sanity.client"
 import { miniGalleryQuery } from "@/lib/sanity.queries"
 import HeroParallaxBackground from "@/components/HeroParallaxBackground"
 import ReferencesBanner from "@/components/ReferencesBanner"
 import Testimonials from "@/components/Testimonials"
 import FAQ from "@/components/FAQ"
+import CatalogCards from "@/components/CatalogCards"
 
 type GalleryItem = {
   _id: string
@@ -16,24 +16,25 @@ type GalleryItem = {
   imageUrl: string
 }
 
-export const revalidate = 300
+// Wichtig: Laufzeit-Fetch erzwingen (ignoriert Build-Time-HTML)
+// Alternative wäre: export const revalidate = 0;
+export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
-  // Sanity-Aufruf sicher machen: liefert [] wenn ENV fehlt/Fehler
+  // Sanity-Abfrage: bei Fehler/fehlender ENV => []
   const items = await safeFetch<GalleryItem[]>(miniGalleryQuery, {}, [])
 
-  // Für Skelett-UI (falls items leer)
-  const gallery = items.length
-    ? items
-    : Array.from({ length: 3 }).map(() => null as unknown as GalleryItem | null)
+  // Fallback für Skelett-UI
+  const gallery: (GalleryItem | null)[] =
+    items && items.length > 0
+      ? items
+      : Array.from({ length: 3 }).map(() => null)
 
   return (
     <>
       {/* HERO */}
       <section className="relative isolate bg-white dark:bg-gray-950" aria-labelledby="hero-heading" role="region">
-        {/* BG-Overlay */}
         <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-white/30 via-white/10 to-white/70 dark:from-gray-900/50 dark:via-gray-900/20 dark:to-gray-900/70" />
-        {/* Parallax */}
         <HeroParallaxBackground
           className="z-[1]"
           count={22}
@@ -42,7 +43,6 @@ export default async function HomePage() {
           parallaxStrength={22}
           sources={["/logos/juradruck_logo.webp"]}
         />
-        {/* Content */}
         <div className="relative z-20">
           <div className="container mx-auto max-w-7xl px-4 py-16 md:px-6">
             <div className="grid items-center gap-10 md:grid-cols-2">
@@ -140,18 +140,21 @@ export default async function HomePage() {
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.map((g, i) => (
-              <figure key={(g as GalleryItem | null)?._id ?? `ph-${i}`} className="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 shadow-card transition-colors dark:border-gray-800">
-                {g && (g as GalleryItem).imageUrl ? (
+              <figure
+                key={g?._id ?? `ph-${i}`}
+                className="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 shadow-card transition-colors dark:border-gray-800"
+              >
+                {g?.imageUrl ? (
                   <>
                     <Image
-                      src={(g as GalleryItem).imageUrl}
-                      alt={(g as GalleryItem).title}
+                      src={g.imageUrl}
+                      alt={g.title}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <figcaption className="absolute bottom-2 left-2 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 ring-1 ring-black/5 dark:bg-gray-900/90 dark:text-gray-100 dark:ring-white/10">
-                      {(g as GalleryItem).category ?? "Projekt"}
+                      {g.category ?? "Projekt"}
                     </figcaption>
                   </>
                 ) : (
@@ -167,6 +170,7 @@ export default async function HomePage() {
       <ReferencesBanner />
       <Testimonials />
       <FAQ />
+      <CatalogCards />
 
       {/* SEO-Teaser */}
       <section className="bg-gray-50 dark:bg-gray-900" role="region" aria-labelledby="seo-teaser">
