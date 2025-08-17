@@ -9,6 +9,7 @@ import Testimonials from "@/components/Testimonials"
 import FAQ from "@/components/FAQ"
 import CatalogCards from "@/components/CatalogCards"
 
+
 type GalleryItem = {
   _id: string
   title: string
