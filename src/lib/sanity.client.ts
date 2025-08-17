@@ -2,37 +2,52 @@
 import { createClient, type ClientConfig } from '@sanity/client'
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-const apiVersion= process.env.SANITY_API_VERSION || '2024-01-01'
-const token     = process.env.SANITY_READ_TOKEN
+const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET
+const apiVersion = process.env.SANITY_API_VERSION || '2025-01-01'
+const token      = process.env.SANITY_READ_TOKEN // optional
 
-export function getClient() {
-  if (!projectId) return null
+export const hasSanityConfig = Boolean(projectId && dataset)
+
+let internalClient: ReturnType<typeof createClient> | null = null
+if (hasSanityConfig) {
   const config: ClientConfig = {
-    projectId,
-    dataset,
+    projectId: projectId!,
+    dataset: dataset!,
     apiVersion,
     useCdn: true,
-    token,                 // only needed for private/draft
+    token,                 // nur nötig, wenn private Daten o. Drafts
     perspective: 'published',
   }
-  return createClient(config)
+  internalClient = createClient(config)
 }
 
+// Backwards-compat alias:
+export const sanityClient = internalClient
+
 /**
- * Safe fetch: returns fallback if client/config is missing or fetch fails.
+ * Safe fetch wrapper:
+ *  - gibt `fallback` zurück, wenn keine Config vorhanden oder ein Fehler auftritt
  */
 export async function safeFetch<T>(
   query: string,
   params: Record<string, unknown> = {},
   fallback: T
 ): Promise<T> {
+  if (!internalClient) return fallback
   try {
-    const client = getClient()
-    if (!client) return fallback
-    // @ts-ignore - client.fetch is well-typed by @sanity/client
-    return await client.fetch<T>(query, params)
-  } catch {
+    return await internalClient.fetch<T>(query, params)
+  } catch (err) {
+    console.error('[Sanity] fetch error:', err)
     return fallback
+  }
+}
+
+/** Optional: für schnelle Diagnose (nicht zwingend) */
+export function getPublicSanityEnv() {
+  return {
+    projectId: projectId || null,
+    dataset: dataset || null,
+    apiVersion,
+    hasToken: Boolean(token),
   }
 }
