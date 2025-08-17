@@ -1,9 +1,10 @@
 // src/app/downloads/page.tsx
 import Image from "next/image"
 import Link from "next/link"
+import { safeFetch } from '@/lib/sanity.client'
 import { galleryQuery } from '@/lib/sanity.queries'
-import { downloadsQuery } from '@/lib/sanity.queries'
 
+const items = await safeFetch<GalleryItem[]>(galleryQuery, {}, [])
 
 const catalogs = [
   {

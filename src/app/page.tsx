@@ -8,8 +8,10 @@ import ReferencesBanner from "@/components/ReferencesBanner";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CatalogCards from "@/components/CatalogCards";
+import { safeFetch } from '@/lib/sanity.client'
 import { galleryQuery } from '@/lib/sanity.queries'
-import { downloadsQuery } from '@/lib/sanity.queries'
+
+const items = await safeFetch<GalleryItem[]>(galleryQuery, {}, [])
 
 
 
