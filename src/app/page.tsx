@@ -3,12 +3,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { safeFetch } from "@/lib/sanity.client"
 import { miniGalleryQuery } from "@/lib/sanity.queries"
-import HeroParallaxBackground from "@/components/HeroParallaxBackground"
 import ReferencesBanner from "@/components/ReferencesBanner"
 import Testimonials from "@/components/Testimonials"
 import FAQ from "@/components/FAQ"
 import CatalogCards from "@/components/CatalogCards"
-
+import GoogleReviewsStatic from "@/components/GoogleReviewsStatic"
 
 type GalleryItem = {
   _id: string
@@ -36,14 +35,6 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="relative isolate bg-white dark:bg-gray-950" aria-labelledby="hero-heading" role="region">
         <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-white/30 via-white/10 to-white/70 dark:from-gray-900/50 dark:via-gray-900/20 dark:to-gray-900/70" />
-        <HeroParallaxBackground
-          className="z-[1]"
-          count={22}
-          minSize={34}
-          maxSize={120}
-          parallaxStrength={22}
-          sources={["/logos/juradruck_logo.webp"]}
-        />
         <div className="relative z-20">
           <div className="container mx-auto max-w-7xl px-4 py-16 md:px-6">
             <div className="grid items-center gap-10 md:grid-cols-2">
@@ -106,28 +97,77 @@ export default async function HomePage() {
       </section>
 
       {/* Leistungen */}
-      <section className="bg-gray-50 dark:bg-gray-900" aria-labelledby="services-heading" role="region">
-        <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
-          <h2 id="services-heading" className="text-2xl font-bold text-gray-900 dark:text-white">Unsere Leistungen</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { href: "/textildruck", title: "Textildruck", desc: "Stickerei, Siebdruck, Flex/Flock, Teamsport, Arbeitsbekleidung" },
-              { href: "/werbetechnik", title: "Werbetechnik", desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV-Druck, Sticker" },
-              { href: "/fahrzeugbeschriftung", title: "Fahrzeugbeschriftung", desc: "Teilfolierung, Carwrapping, Flotte, LKW-Plane" },
-            ].map((s) => (
-              <Link key={s.href} href={s.href} className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{s.title}</h3>
-                  <span className="rounded-full border px-3 py-1 text-xs text-gray-700 transition group-hover:border-indigo-300 group-hover:text-indigo-700 dark:border-gray-700 dark:text-gray-300 dark:group-hover:text-indigo-300">
-                    Mehr
-                  </span>
-                </div>
-                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{s.desc}</p>
-              </Link>
-            ))}
+<section
+  className="bg-gray-50 dark:bg-gray-900"
+  aria-labelledby="services-heading"
+  role="region"
+>
+  <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
+    <h2
+      id="services-heading"
+      className="text-2xl font-bold text-gray-900 dark:text-white"
+    >
+      Unsere Leistungen
+    </h2>
+    <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        {
+          href: "/textildruck",
+          title: "Textildruck",
+          desc: "Stickerei, Siebdruck, Flex/Flock, Teamsport, Arbeitsbekleidung",
+          img: "/images/services/textildruck.webp",
+        },
+        {
+          href: "/textilverkauf",
+          title: "Textilverkauf",
+          desc: "T-Shirts, Workwear, Teamsport, Arbeitsbekleidung",
+          img: "/images/services/textilverkauf.webp",
+        },
+        {
+          href: "/werbetechnik",
+          title: "Werbetechnik",
+          desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV-Druck, Sticker",
+          img: "/images/services/werbetechnik.webp",
+        },
+        {
+          href: "/fahrzeugbeschriftung",
+          title: "Fahrzeugbeschriftung",
+          desc: "Teilfolierung, Carwrapping, Flotte, LKW-Plane",
+          img: "/images/services/fahrzeugbeschriftung.webp",
+        },
+      ].map((s) => (
+        <Link
+          key={s.href}
+          href={s.href}
+          className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"
+        >
+          <div className="relative h-40 w-full overflow-hidden">
+            <Image
+              src={s.img}
+              alt={s.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
           </div>
-        </div>
-      </section>
+          <div className="p-5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {s.title}
+              </h3>
+              <span className="rounded-full border px-3 py-1 text-xs text-gray-700 transition group-hover:border-indigo-300 group-hover:text-indigo-700 dark:border-gray-700 dark:text-gray-300 dark:group-hover:text-indigo-300">
+                Mehr
+              </span>
+            </div>
+            <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+              {s.desc}
+            </p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Mini-Galerie */}
       <section className="bg-white dark:bg-gray-950" aria-labelledby="gallery-heading" role="region">
@@ -170,6 +210,15 @@ export default async function HomePage() {
       {/* Referenzen, Testimonials, FAQ */}
       <ReferencesBanner />
       <Testimonials />
+     
+<GoogleReviewsStatic
+  imageSrc="/reviews/googleBewertung.webp"
+  asOf="Stand: Feb 2025"
+  placeUrl="https://share.google/kBSxMIZjEWNJ0TIYF"
+  rating={5}
+  total={117}
+/>
+
       <FAQ />
       <CatalogCards />
 

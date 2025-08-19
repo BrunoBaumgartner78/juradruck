@@ -37,12 +37,20 @@ export default function Testimonials() {
     >
       <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
         <div className="mb-6 flex items-center justify-between">
-          <h2 id="testimonials-heading" className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2
+            id="testimonials-heading"
+            className="text-2xl font-bold text-gray-900 dark:text-white"
+          >
             Kundenstimmen
           </h2>
-          <div aria-hidden="true" className="hidden sm:flex items-center gap-1 text-yellow-500">
-            {/* dekorative Sterne */}
-            {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
+          {/* dekorative Sterne im Header */}
+          <div
+            aria-hidden="true"
+            className="hidden sm:flex items-center gap-1 text-yellow-500"
+          >
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={18} fill="currentColor" />
+            ))}
           </div>
         </div>
 
@@ -55,9 +63,27 @@ export default function Testimonials() {
                     <span className="sr-only">Zitat: </span>“{t.quote}”
                   </p>
                 </blockquote>
-                <figcaption className="mt-4 border-t pt-3 text-sm text-gray-700 dark:text-gray-300 dark:border-gray-700">
-                  <span className="font-semibold text-gray-900 dark:text-white">{t.author}</span>
-                  {t.role ? <span className="text-gray-600 dark:text-gray-400"> · {t.role}</span> : null}
+
+                {/* Sterne unter dem Zitat */}
+                <div
+                  aria-hidden="true"
+                  className="mt-3 flex items-center gap-1 text-yellow-500"
+                >
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={16} fill="currentColor" />
+                  ))}
+                </div>
+
+                <figcaption className="mt-3 border-t pt-3 text-sm text-gray-700 dark:text-gray-300 dark:border-gray-700">
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {t.author}
+                  </span>
+                  {t.role ? (
+                    <span className="text-gray-600 dark:text-gray-400">
+                      {" "}
+                      · {t.role}
+                    </span>
+                  ) : null}
                 </figcaption>
               </figure>
             </li>
