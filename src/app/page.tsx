@@ -8,6 +8,7 @@ import Testimonials from "@/components/Testimonials"
 import FAQ from "@/components/FAQ"
 import CatalogCards from "@/components/CatalogCards"
 import GoogleReviewsStatic from "@/components/GoogleReviewsStatic"
+import HeroSlider from "@/components/HeroSlider"
 
 type GalleryItem = {
   _id: string
@@ -61,16 +62,20 @@ export default async function HomePage() {
               </div>
 
               {/* Hero-Bild */}
-              <div className="relative h-72 w-full overflow-hidden rounded-3xl border border-gray-200 shadow-card md:h-[420px] dark:border-gray-800">
-                <Image
-                  src="/images/hero/textilveredelung.webp"
-                  alt="Textildruck & Werbetechnik – Beispielarbeit"
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
+            
+
+
+{/* Hero-Bild (Slider) */}
+<HeroSlider
+  slides={[
+    { src: "/images/services/fahrzeugbeschriftung.webp", alt: "Textilveredelung – Beispielarbeit" },
+    { src: "/images/services/textildruck.webp",     alt: "Werbetechnik – Schaufensterbeschriftung" },
+    { src: "/images/services/textilverkauf.webp",         alt: "Fahrzeugbeschriftung – Flottenfahrzeug" },
+  ]}
+  heightClasses="h-72 md:h-[420px]"
+  autoPlayMs={5000}
+/>
+
             </div>
           </div>
         </div>
