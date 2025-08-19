@@ -1,119 +1,104 @@
 // src/app/api/werbeplanen/route.ts
-import nodemailer from "nodemailer"
+import { NextResponse } from 'next/server'
+import nodemailer from 'nodemailer'
 
-export const runtime = "nodejs"          // wichtig: Nodemailer braucht Node-Runtime
-export const dynamic = "force-dynamic"   // keine HTML-Pre-Render-Annahme
-
-// Max. Upload ~4.5 MB auf Vercel Serverless – für größere Dateien lieber extern hochladen (S3, Sanity) und nur Link mailen.
-const MAX_FILE_BYTES = 4.5 * 1024 * 1024
-const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"]
-
-function env(name: string, fallback?: string) {
-  const v = process.env[name] ?? fallback
-  if (!v) throw new Error(`Missing env: ${name}`)
-  return v
-}
+/**
+ * Nodemailer benötigt Node.js (nicht Edge).
+ * Force Node.js runtime & keine Static Optimization:
+ */
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
-    // FormData auslesen
-    const form = await req.formData()
+    const body = await req.json().catch(() => ({}))
 
-    const size = String(form.get("size") || "")
-    const name = String(form.get("name") || "")
-    const email = String(form.get("email") || "")
-    const message = String(form.get("message") || "")
-    const file = form.get("file") as File | null
+    // Erwartete Felder – passe an dein Formular an:
+    const {
+      name = '',
+      email = '',
+      phone = '',
+      message = '',
+      company = '',
+      subject = 'Neue Anfrage: Werbeplanen',
+    } = body || {}
 
-    // Basis-Validierung
-    const errors: Record<string, string> = {}
-    if (!size) errors.size = "Bitte eine Planengrösse wählen."
-    if (!name) errors.name = "Bitte Name angeben."
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) errors.email = "Bitte eine gültige E‑Mail angeben."
-    if (!file) errors.file = "Bitte eine Druckdatei hochladen (PDF, JPG oder PNG)."
-
-    if (file) {
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        errors.file = "Nur PDF, JPG, PNG sind erlaubt."
-      } else if (file.size > MAX_FILE_BYTES) {
-        errors.file = "Datei ist zu groß (max. ~4.5 MB auf dem Server)."
-      }
+    // Minimal-Validierung
+    if (!email && !phone) {
+      return NextResponse.json(
+        { ok: false, error: 'Bitte E-Mail oder Telefon angeben.' },
+        { status: 400 }
+      )
     }
 
-    if (Object.keys(errors).length) {
-      return Response.json({ ok: false, errors }, { status: 400 })
+    // SMTP aus ENV – in Vercel hinterlegen!
+    const {
+      SMTP_HOST,
+      SMTP_PORT,
+      SMTP_USER,
+      SMTP_PASS,
+      MAIL_TO,          // Empfänger deiner Agentur
+      MAIL_FROM,        // z.B. "JuraDruck <no-reply@deinedomain.ch>"
+    } = process.env as Record<string, string | undefined>
+
+    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS || !MAIL_TO || !MAIL_FROM) {
+      return NextResponse.json(
+        { ok: false, error: 'SMTP-Umgebung unvollständig konfiguriert.' },
+        { status: 500 }
+      )
     }
 
-    // Datei in Buffer konvertieren
-    const arrayBuf = await file!.arrayBuffer()
-    const buffer = Buffer.from(arrayBuf)
-
-    // Transporter (SMTP)
     const transporter = nodemailer.createTransport({
-      host: env("SMTP_HOST"),
-      port: Number(env("SMTP_PORT", "465")),
-      secure: Number(process.env.SMTP_PORT || "465") === 465, // true bei 465
-      auth: {
-        user: env("SMTP_USER"),
-        pass: env("SMTP_PASS"),
-      },
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT),
+      secure: Number(SMTP_PORT) === 465, // 465 = SSL, sonst STARTTLS
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
     })
 
-    const MAIL_TO = env("MAIL_TO")   // z.B. info@juradruck.ch
-    const MAIL_FROM = env("MAIL_FROM", env("SMTP_USER"))
-
-    const subject = `Werbeplane – Anfrage (${size}) von ${name}`
-
-    const text = [
-      `Neue Werbeplanen-Anfrage:`,
-      `Name: ${name}`,
-      `E-Mail: ${email}`,
-      `Grösse: ${size}`,
-      `Nachricht: ${message || "-"}`,
-      ``,
-      `Datei: ${file!.name} (${Math.round(file!.size / 1024)} KB, ${file!.type})`,
-    ].join("\n")
-
     const html = `
-      <h2>Neue Werbeplanen-Anfrage</h2>
-      <p><b>Name:</b> ${escapeHtml(name)}<br/>
-      <b>E-Mail:</b> ${escapeHtml(email)}<br/>
-      <b>Grösse:</b> ${escapeHtml(size)}</p>
-      <p><b>Nachricht:</b><br/>${escapeHtml(message || "-").replace(/\n/g, "<br/>")}</p>
-      <p>Datei: ${escapeHtml(file!.name)} (${Math.round(file!.size / 1024)} KB, ${file!.type})</p>
+      <h2>${subject}</h2>
+      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Firma:</strong> ${escapeHtml(company)}</p>
+      <p><strong>E-Mail:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>
+      <p><strong>Nachricht:</strong><br/>${nl2br(escapeHtml(message))}</p>
+      <hr/>
+      <small>Gesendet am ${new Date().toLocaleString('de-CH')}</small>
     `
 
     await transporter.sendMail({
-      from: MAIL_FROM,
       to: MAIL_TO,
-      replyTo: `${name} <${email}>`,
+      from: MAIL_FROM,
       subject,
-      text,
+      replyTo: email || undefined,
+      text: stripHtml(html),
       html,
-      attachments: [
-        {
-          filename: file!.name,
-          content: buffer,
-          contentType: file!.type,
-        },
-      ],
     })
 
-    return Response.json({ ok: true, message: "Anfrage erfolgreich versendet." })
+    return NextResponse.json({ ok: true })
   } catch (err: any) {
-    console.error("API /api/werbeplanen error:", err)
-    return Response.json(
-      { ok: false, error: "Senden fehlgeschlagen. Bitte später erneut versuchen." },
+    console.error('Mail Fehler:', err)
+    return NextResponse.json(
+      { ok: false, error: 'Senden fehlgeschlagen.' },
       { status: 500 }
     )
   }
 }
 
-function escapeHtml(s: string) {
-  return s
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;")
+// Hilfsfunktionen (klein & lokal, kein Extra-Import nötig)
+function escapeHtml(input: string) {
+  return String(input)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+}
+
+function nl2br(input: string) {
+  return input.replace(/\n/g, '<br/>')
+}
+
+function stripHtml(input: string) {
+  return input.replace(/<[^>]*>/g, '')
 }
