@@ -13,23 +13,20 @@ import HeroSlider from "@/components/HeroSlider"
 type GalleryItem = {
   _id: string
   title: string
-  category?: string
-  imageUrl: string
+  category?: string | null
+  imageUrl?: string | null
 }
 
-// Wichtig: Laufzeit-Fetch erzwingen (ignoriert Build-Time-HTML)
-// Alternative wäre: export const revalidate = 0;
+// Laufzeit-Fetch erzwingen (Server-Snapshot beim Build umgehen)
 export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
-  // Sanity-Abfrage: bei Fehler/fehlender ENV => []
-  const items = await safeFetch<GalleryItem[]>(miniGalleryQuery, {}, [])
+  const itemsRaw = await safeFetch<GalleryItem[] | null>(miniGalleryQuery, {}, [])
+  const items: GalleryItem[] = Array.isArray(itemsRaw) ? itemsRaw : []
 
   // Fallback für Skelett-UI
   const gallery: (GalleryItem | null)[] =
-    items && items.length > 0
-      ? items
-      : Array.from({ length: 3 }).map(() => null)
+    items.length > 0 ? items : Array.from({ length: 3 }).map(() => null)
 
   return (
     <>
@@ -53,29 +50,24 @@ export default async function HomePage() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link href="/kontakt" className="btn btn-primary">
-                  Offerte Anfragen
+                    Offerte anfragen
                   </Link>
                   <Link href="/downloads" className="btn btn-secondary">
-                    Katalog & Preislisten
+                    Kataloge & Preislisten
                   </Link>
                 </div>
               </div>
 
-              {/* Hero-Bild */}
-            
-
-
-{/* Hero-Bild (Slider) */}
-<HeroSlider
-  slides={[
-    { src: "/images/services/fahrzeugbeschriftung.webp", alt: "Textilveredelung – Beispielarbeit" },
-    { src: "/images/services/textildruck.webp",     alt: "Werbetechnik – Schaufensterbeschriftung" },
-    { src: "/images/services/textilverkauf.webp",         alt: "Fahrzeugbeschriftung – Flottenfahrzeug" },
-  ]}
-  heightClasses="h-72 md:h-[420px]"
-  autoPlayMs={5000}
-/>
-
+              {/* Hero-Bild (Slider) */}
+              <HeroSlider
+                slides={[
+                  { src: "/images/services/fahrzeugbeschriftung.webp", alt: "Fahrzeugbeschriftung – Beispielarbeit" },
+                  { src: "/images/services/textildruck.webp", alt: "Textildruck – Druck & Stick" },
+                  { src: "/images/services/textilverkauf.webp", alt: "Textilverkauf – Showroom & Auswahl" },
+                ]}
+                heightClasses="h-72 md:h-[420px]"
+                autoPlayMs={5000}
+              />
             </div>
           </div>
         </div>
@@ -102,77 +94,77 @@ export default async function HomePage() {
       </section>
 
       {/* Leistungen */}
-<section
-  className="bg-gray-50 dark:bg-gray-900"
-  aria-labelledby="services-heading"
-  role="region"
->
-  <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
-    <h2
-      id="services-heading"
-      className="text-2xl font-bold text-gray-900 dark:text-white"
-    >
-      Unsere Leistungen
-    </h2>
-    <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {[
-        {
-          href: "/textildruck",
-          title: "Textildruck",
-          desc: "Stickerei, Siebdruck, Flex/Flock, Teamsport, Arbeitsbekleidung",
-          img: "/images/services/textildruck.webp",
-        },
-        {
-          href: "/textilverkauf",
-          title: "Textilverkauf",
-          desc: "T-Shirts, Workwear, Teamsport, Arbeitsbekleidung",
-          img: "/images/services/showroom.webp",
-        },
-        {
-          href: "/werbetechnik",
-          title: "Werbetechnik",
-          desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV-Druck, Sticker",
-          img: "/images/werbetechnik/stickers/sticker.webp",
-        },
-        {
-          href: "/fahrzeugbeschriftung",
-          title: "Fahrzeugbeschriftung",
-          desc: "Teilfolierung, Carwrapping, Flotte, LKW-Plane",
-          img: "/images/services/fahrzeugbeschriftung.webp",
-        },
-      ].map((s) => (
-        <Link
-          key={s.href}
-          href={s.href}
-          className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"
-        >
-          <div className="relative h-40 w-full overflow-hidden">
-            <Image
-              src={s.img}
-              alt={s.title}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            />
+      <section
+        className="bg-gray-50 dark:bg-gray-900"
+        aria-labelledby="services-heading"
+        role="region"
+      >
+        <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
+          <h2
+            id="services-heading"
+            className="text-2xl font-bold text-gray-900 dark:text-white"
+          >
+            Unsere Leistungen
+          </h2>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                href: "/textildruck",
+                title: "Textildruck",
+                desc: "Stickerei, Siebdruck, Flex/Flock, Teamsport, Arbeitsbekleidung",
+                img: "/images/services/textildruck.webp",
+              },
+              {
+                href: "/textilverkauf",
+                title: "Textilverkauf",
+                desc: "T‑Shirts, Workwear, Teamsport, Arbeitsbekleidung",
+                img: "/images/services/showroom.webp",
+              },
+              {
+                href: "/werbetechnik",
+                title: "Werbetechnik",
+                desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV‑Druck, Sticker",
+                img: "/images/werbetechnik/stickers/sticker.webp",
+              },
+              {
+                href: "/fahrzeugbeschriftung",
+                title: "Fahrzeugbeschriftung",
+                desc: "Teilfolierung, Carwrapping, Flotte, LKW‑Plane",
+                img: "/images/services/fahrzeugbeschriftung.webp",
+              },
+            ].map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"
+              >
+                <div className="relative h-40 w-full overflow-hidden">
+                  <Image
+                    src={s.img}
+                    alt={s.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {s.title}
+                    </h3>
+                    <span className="rounded-full border px-3 py-1 text-xs text-gray-700 transition group-hover:border-indigo-300 group-hover:text-indigo-700 dark:border-gray-700 dark:text-gray-300 dark:group-hover:text-indigo-300">
+                      Mehr
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+                    {s.desc}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
-          <div className="p-5">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {s.title}
-              </h3>
-              <span className="rounded-full border px-3 py-1 text-xs text-gray-700 transition group-hover:border-indigo-300 group-hover:text-indigo-700 dark:border-gray-700 dark:text-gray-300 dark:group-hover:text-indigo-300">
-                Mehr
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-              {s.desc}
-            </p>
-          </div>
-        </Link>
-      ))}
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* Mini-Galerie */}
       <section className="bg-white dark:bg-gray-950" aria-labelledby="gallery-heading" role="region">
@@ -194,7 +186,7 @@ export default async function HomePage() {
                   <>
                     <Image
                       src={g.imageUrl}
-                      alt={g.title}
+                      alt={g.title || "Galeriebild"}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -204,7 +196,7 @@ export default async function HomePage() {
                     </figcaption>
                   </>
                 ) : (
-                  <div className="absolute inset-0 animate-pulse bg-gray-100 dark:bg-gray-800" />
+                  <div className="absolute inset-0 animate-pulse bg-gray-100 dark:bg-gray-800" aria-hidden="true" />
                 )}
               </figure>
             ))}
@@ -215,14 +207,14 @@ export default async function HomePage() {
       {/* Referenzen, Testimonials, FAQ */}
       <ReferencesBanner />
       <Testimonials />
-     
-<GoogleReviewsStatic
-  imageSrc="/reviews/googleBewertung.webp"
-  asOf="Stand: Feb 2025"
-  placeUrl="https://share.google/kBSxMIZjEWNJ0TIYF"
-  rating={5}
-  total={117}
-/>
+
+      <GoogleReviewsStatic
+        imageSrc="/reviews/googleBewertung.webp"
+        asOf="Stand: Feb 2025"
+        placeUrl="https://share.google/kBSxMIZjEWNJ0TIYF"
+        rating={5}
+        total={117}
+      />
 
       <FAQ />
       <CatalogCards />
@@ -249,14 +241,16 @@ export default async function HomePage() {
               <Link href="/kontakt" className="btn btn-primary">
                 Offerte anfragen
               </Link>
-              <a href="tel:+410000000" className="rounded-lg border border-white/70 px-5 py-3 font-semibold text-white transition hover:bg-white/10">
+              <a
+                href="tel:+410000000"
+                className="rounded-lg border border-white/70 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
+              >
                 Anrufen
               </a>
             </div>
           </div>
         </div>
       </section>
-      
     </>
   )
 }
