@@ -9,12 +9,14 @@ import ThemeToggle from "./ThemeToggle"
 
 const navItems = [
   { label: "Start", href: "/" },
+   { label: "Über uns", href: "/ueber-uns" },
   { label: "Textildruck", href: "/textildruck" },
   { label: "Textilverkauf", href: "/textilverkauf" },
   { label: "Werbetechnik", href: "/werbetechnik" },
   { label: "Fahrzeugbeschriftung", href: "/fahrzeugbeschriftung" },
   { label: "Galerie", href: "/galerie" },
   { label: "Downloads", href: "/downloads" },
+   { label: "Jobs", href: "/jobs" },
   { label: "Kontakt", href: "/kontakt" },
    { label: "Blog", href: "/blog" },
 ]
@@ -55,7 +57,7 @@ export default function Header() {
 
         {/* Desktop Nav (ab 1180px) */}
         <nav
-          className="hidden min-[1185px]:block"
+          className="hidden min-[1370px]:block"
           aria-label="Hauptmenü"
         >
           <ul className="flex items-center gap-6">
@@ -84,7 +86,7 @@ export default function Header() {
         </nav>
 
         {/* Desktop: CTA + ThemeToggle (ab 1180px) */}
-        <div className="hidden min-[1185px]:flex items-center gap-3">
+        <div className="hidden min-[1370px]:flex items-center gap-3">
           <ThemeToggle />
           <Link
             href="/"
@@ -102,7 +104,7 @@ export default function Header() {
         <button
           type="button"
           className="
-            min-[1185px]:hidden text-gray-800 dark:text-gray-100
+            min-[1370px]:hidden text-gray-800 dark:text-gray-100
             rounded-lg p-2
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white
             dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900
@@ -121,7 +123,7 @@ export default function Header() {
         <div
           id={menuId}
           className="
-            min-[1185px]:hidden border-t border-gray-200 bg-white px-4 py-3
+            min-[1370px]:hidden border-t border-gray-200 bg-white px-4 py-3
             dark:border-gray-800 dark:bg-gray-900
           "
         >

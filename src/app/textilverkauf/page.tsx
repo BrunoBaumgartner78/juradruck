@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default function TextilverkaufPage() {
   const heroSlides = [
-    { src: "/images/hero/textilverkauf.webp", alt: "Workwear – robuste Jacken und Hosen" },
-    { src: "/images/services/textildruck.webp", alt: "Veredelung – Stickerei & Druck" },
-    { src: "/images/services/textilverkauf.webp", alt: "Teamwear – Shirts & Hoodies" },
+    { src: "/images/textilverkauf/showroom.webp", alt: "Workwear – robuste Jacken und Hosen" },
+    { src: "/images/textilverkauf/arbeitskleider6.webp", alt: "Veredelung – Stickerei & Druck" },
+    { src: "/images/textilverkauf/arbeitskleider2.webp", alt: "Teamwear – Shirts & Hoodies" },
   ]
 
   const categories = [
@@ -47,7 +47,7 @@ export default function TextilverkaufPage() {
       key: "workwear",
       title: "Workwear",
       desc: "Jacken, Hosen, Westen – funktional und langlebig.",
-      img: "/images/shop/textilverkauf.webp",
+      img: "/images/textilverkauf/arbeitskleider3.webp",
       link: "/textilverkauf/workwear",
       tags: ["CORDURA®", "Reflex", "Wetterfest"],
     },
@@ -55,7 +55,7 @@ export default function TextilverkaufPage() {
       key: "team",
       title: "Teamsport",
       desc: "Trikots, Trainingsanzüge & Accessoires in Vereinsfarben.",
-      img: "/images/shop/textildruck.webp",
+      img: "/images/textilverkauf/teamsport1.webp",
       link: "/textilverkauf/team",
       tags: ["Schnelltrocknend", "Nummern", "Vereinsfarben"],
     },
@@ -95,10 +95,10 @@ export default function TextilverkaufPage() {
                 Auf Wunsch direkt mit Druck oder Stick, alles aus einer Hand.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/kontakt" className="rounded-lg bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950">
+                <Link href="/kontakt" className="btn btn-primary">
                   Offerte anfragen
                 </Link>
-                <Link href="/downloads" className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-gray-600 dark:focus-visible:ring-offset-gray-950">
+                <Link href="/downloads" className="btn btn-secondary">
                   Kataloge & Preislisten
                 </Link>
               </div>

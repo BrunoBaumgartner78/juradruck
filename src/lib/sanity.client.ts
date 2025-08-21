@@ -1,53 +1,35 @@
 // src/lib/sanity.client.ts
-import { createClient, type ClientConfig } from '@sanity/client'
+import {createClient} from 'next-sanity'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET
-const apiVersion = process.env.SANITY_API_VERSION || '2025-01-01'
-const token      = process.env.SANITY_READ_TOKEN // optional
+export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!
+export const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-01-01'
+export const useCdn = process.env.NODE_ENV === 'production'
 
+// wichtig für Feature-Flags (z.B. Downloads-Fallbacks)
 export const hasSanityConfig = Boolean(projectId && dataset)
 
-let internalClient: ReturnType<typeof createClient> | null = null
-if (hasSanityConfig) {
-  const config: ClientConfig = {
-    projectId: projectId!,
-    dataset: dataset!,
-    apiVersion,
-    useCdn: true,
-    token,                 // nur nötig, wenn private Daten o. Drafts
-    perspective: 'published',
-  }
-  internalClient = createClient(config)
-}
+// ➜ Exportiere den Client (Fix für deinen Import in sanity.image.ts)
+export const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn,
+})
 
-// Backwards-compat alias:
-export const sanityClient = internalClient
-
-/**
- * Safe fetch wrapper:
- *  - gibt `fallback` zurück, wenn keine Config vorhanden oder ein Fehler auftritt
- */
+// Kleiner Helfer: sichere Fetch-Funktion mit Fallback
 export async function safeFetch<T>(
   query: string,
   params: Record<string, unknown> = {},
   fallback: T
 ): Promise<T> {
-  if (!internalClient) return fallback
+  if (!hasSanityConfig) return fallback
   try {
-    return await internalClient.fetch<T>(query, params)
+    return await client.fetch<T>(query, params)
   } catch (err) {
-    console.error('[Sanity] fetch error:', err)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[sanity.safeFetch]', err)
+    }
     return fallback
-  }
-}
-
-/** Optional: für schnelle Diagnose (nicht zwingend) */
-export function getPublicSanityEnv() {
-  return {
-    projectId: projectId || null,
-    dataset: dataset || null,
-    apiVersion,
-    hasToken: Boolean(token),
   }
 }

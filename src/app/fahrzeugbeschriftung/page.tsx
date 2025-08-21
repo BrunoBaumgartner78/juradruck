@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const heroSlides = [
-  { id: "fb-1", src: "/images/fahrzeugbeschriftung/vollfolierung1.webp", alt: "Vollfolierung – Seitenansicht" },
+  { id: "fb-1", src: "/images/fahrzeugbeschriftung/fahrzeugbeschriftung.webp", alt: "Vollfolierung – Seitenansicht" },
   { id: "fb-2", src: "/images/fahrzeugbeschriftung/vollfolierung2.webp", alt: "Teilfolierung – Motorhaube & Dach" },
   { id: "fb-3", src: "/images/fahrzeugbeschriftung/vollfolierung3.webp", alt: "Flottenbeschriftung – Transporter" },
 ];
@@ -27,7 +27,7 @@ const services = [
       "Komplette Farbänderung inkl. Kanten – Schutz & neues Erscheinungsbild ohne Lackierung.",
     bullets: ["Gegossene Premiumfolien", "Rückstandsfrei entfernbar", "Matt, Glanz, Metallic, Effekte"],
     from: "ab CHF 2’500*",
-    img: "/images/fahrzeugbeschriftung/vollfolierung1.webp",
+    img: "/images/fahrzeugbeschriftung/vollfolierung2.webp",
   },
   {
     id: "teil",
@@ -36,7 +36,7 @@ const services = [
       "Akzente für Dach, Spiegel, Motorhaube oder Zierstreifen – starke Wirkung mit kleinem Aufwand.",
     bullets: ["Gezielte Highlights", "Schnelle Umsetzung", "Kosteneffizient"],
     from: "ab CHF 450*",
-    img: "/images/fahrzeugbeschriftung/vollfolierung4.webp",
+    img: "/images/fahrzeugbeschriftung/vollfolierung1.webp",
   },
   {
     id: "lkw",
@@ -45,7 +45,7 @@ const services = [
       "Robuste Folierungen für Nutzfahrzeuge – Kabine, Auflieger & Kühlkoffer inkl. großformatiger Grafiken.",
     bullets: ["Großformatdrucke", "UV- & witterungsbeständig", "Vor-Ort-Montage möglich"],
     from: "auf Anfrage",
-    img: "/images/fahrzeugbeschriftung/vollfolierung5.webp",
+    img: "/images/fahrzeugbeschriftung/lieferwagen.webp",
   },
   {
     id: "flotte",
@@ -54,17 +54,17 @@ const services = [
       "Einheitliches Corporate Design für Ihre Fahrzeugflotte – effizient, skalierbar, wiederholbar.",
     bullets: ["CI-konform", "Serienproduktion & Planung", "Zentrale Datenverwaltung"],
     from: "auf Anfrage",
-    img: "/images/fahrzeugbeschriftung/vollfolierung6.webp",
+    img: "/images/fahrzeugbeschriftung/flote.webp",
   },
 ];
 
 const gallery = [
   { src: "/images/fahrzeugbeschriftung/vollfolierung1.webp", alt: "Teilfolierung – Motorhaube", w: 800, h: 600 },
   { src: "/images/fahrzeugbeschriftung/vollfolierung2.webp", alt: "Vollfolierung – Seitenansicht", w: 800, h: 600 },
-  { src: "/images/fahrzeugbeschriftung/vollfolierung3.webp", alt: "Flottenbeschriftung – Transporter", w: 800, h: 600 },
-  { src: "/images/fahrzeugbeschriftung/vollfolierung4.webp", alt: "Lastwagenfolierung – Auflieger", w: 800, h: 600 },
+  { src: "/images/fahrzeugbeschriftung/flote.webp", alt: "Flottenbeschriftung – Transporter", w: 800, h: 600 },
+  { src: "/images/fahrzeugbeschriftung/lieferwagen.webp", alt: "Lastwagenfolierung – Auflieger", w: 800, h: 600 },
   { src: "/images/fahrzeugbeschriftung/vollfolierung5.webp", alt: "Dach in Kontrastfarbe", w: 800, h: 600 },
-  { src: "/images/fahrzeugbeschriftung/vollfolierung6.webp", alt: "Logos & Kontaktdaten seitlich", w: 800, h: 600 },
+  { src: "/images/fahrzeugbeschriftung/seitenansicht.webp", alt: "Logos & Kontaktdaten seitlich", w: 800, h: 600 },
 ];
 
 export default function FahrzeugbeschriftungPage() {
@@ -103,14 +103,12 @@ export default function FahrzeugbeschriftungPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/kontakt"
-                  className="rounded-lg bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950"
-                >
+className="btn btn-primary"                >
                   Offerte anfragen
                 </Link>
                 <Link
                   href="/galerie"
-                  className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-gray-600 dark:focus-visible:ring-offset-gray-950"
-                >
+className="btn btn-secondary"                >
                   Referenzen ansehen
                 </Link>
               </div>
@@ -177,8 +175,7 @@ export default function FahrzeugbeschriftungPage() {
                   <div className="mt-4">
                     <Link
                       href={`/kontakt?leistung=${encodeURIComponent(s.title)}`}
-                      className="rounded-lg bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 dark:bg-indigo-600 dark:hover:bg-indigo-500"
-                    >
+className="btn btn-primary"                    >
                       Angebot anfragen
                     </Link>
                   </div>
@@ -262,6 +259,58 @@ export default function FahrzeugbeschriftungPage() {
           </div>
         </div>
       </section>
+            {/* SEO-Text: Fahrzeugfolierung */}
+      <section
+        className="bg-gray-50 dark:bg-gray-900"
+        aria-labelledby="seo-fahrzeugfolierung"
+        role="region"
+      >
+        <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6 prose prose-indigo dark:prose-invert">
+          <h2 id="seo-fahrzeugfolierung">
+            Fahrzeugfolierung – Sichtbarkeit, Schutz & Design in einem
+          </h2>
+          <p>
+            Die <strong>Fahrzeugfolierung</strong> ist eine der effektivsten Möglichkeiten, um
+            Fahrzeuge optisch aufzuwerten und gleichzeitig den Lack zu schützen. Ob{" "}
+            <strong>Vollfolierung</strong>, <strong>Teilfolierung</strong> oder{" "}
+            <strong>Carwrapping</strong> – wir verwandeln jedes Auto, jeden Lieferwagen
+            oder Lastwagen in einen individuellen Blickfang. Mit hochwertigen Folien
+            führender Hersteller erzielen wir langlebige Ergebnisse, die sowohl im Alltag
+            als auch im geschäftlichen Einsatz überzeugen.
+          </p>
+
+          <h3>Vorteile einer professionellen Fahrzeugfolierung</h3>
+          <ul>
+            <li><strong>Designfreiheit:</strong> Farben, Effekte, Matt- oder Glanzoptik – nahezu alles ist möglich.</li>
+            <li><strong>Lackschutz:</strong> Die Folie schützt den Originallack vor UV-Strahlen, kleinen Kratzern und Steinschlag.</li>
+            <li><strong>Flexibilität:</strong> Anders als bei einer Lackierung kann die Folie rückstandsfrei entfernt oder ausgetauscht werden.</li>
+            <li><strong>Werbewirkung:</strong> Fahrzeuge werden zu mobilen Werbeträgern – perfekt für Unternehmen, die ihre Marke sichtbar machen wollen.</li>
+          </ul>
+
+          <h3>Individuelle Lösungen für Privat & Unternehmen</h3>
+          <p>
+            Neben klassischen Farbwechseln bieten wir <strong>Teilfolierungen</strong>{" "}
+            (z. B. Dach, Motorhaube, Spiegel) und <strong>Flottenfolierungen</strong>{" "}
+            für Firmenfahrzeuge an. So erhältst du ein einheitliches Corporate Design
+            auf allen Fahrzeugen. Auch <strong>Lastwagenfolierungen</strong> mit
+            großformatigen Werbegrafiken sind Teil unseres Angebots.
+          </p>
+
+          <h3>Fahrzeugfolierung in der Schweiz</h3>
+          <p>
+            Als erfahrener Partner in der <strong>Fahrzeugbeschriftung und -folierung in der Schweiz</strong> begleiten wir dich von der Beratung über das Design
+            bis hin zur präzisen Montage. Unsere geschulten Mitarbeiter arbeiten
+            detailgenau und nutzen ausschließlich Premium-Folien, die lange halten und
+            sich pflegeleicht reinigen lassen.
+          </p>
+
+          <p>
+            👉 Mit einer professionellen Fahrzeugfolierung kombinierst du{" "}
+            <strong>Werbewirkung, Schutz und Design</strong> – und machst dein Fahrzeug
+            zum echten Unikat.
+          </p>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="relative isolate overflow-hidden bg-indigo-700">
@@ -276,14 +325,15 @@ export default function FahrzeugbeschriftungPage() {
             <div className="flex md:justify-end">
               <Link
                 href="/kontakt"
-                className="rounded-lg bg-white px-5 py-3 font-medium text-indigo-700 shadow hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-              >
+className="btn btn-secondary"              >
                 Offerte anfragen
               </Link>
             </div>
           </div>
         </div>
       </section>
+      
+
     </>
   );
 }

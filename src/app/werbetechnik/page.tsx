@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 // Hero-Slider-Bilder (du kannst die Pfade jederzeit anpassen/ergänzen)
 const heroSlides = [
-  { src: "/images/hero/textilveredelung.webp", alt: "Großformatdruck auf Werbeplane" },
-  { src: "/images/services/werbetechnik.webp", alt: "Montage von Werbebanner an Fassade" },
-  { src: "/images/services/textilverkauf.webp", alt: "Beispielbranding im Eingangsbereich" },
+  { src: "/images/werbetechnik/werbeplane.webp", alt: "Großformatdruck auf Werbeplane" },
+  { src: "/images/werbetechnik/werbeplane2.webp", alt: "Werbeplane auf dem Bearbeitungstisch" },
+  { src: "/images/werbetechnik/werbeplane1.webp", alt: "Werbeplane montage der Oesen" },
 ]
 
 // Helper: Kategorie-Abschnitt mit 3 Bildern
@@ -93,14 +93,12 @@ export default function WerbetechnikPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/kontakt"
-                  className="rounded-lg bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"
-                >
+className="btn btn-primary">                
                   Offerte anfragen
                 </Link>
                 <Link
                   href="/werbetechnik/planen"
-                  className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-gray-600 dark:focus-visible:ring-offset-gray-900"
-                >
+className="btn btn-secondary">                
                   Werbeplane konfigurieren
                 </Link>
               </div>

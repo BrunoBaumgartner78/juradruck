@@ -52,10 +52,10 @@ export default async function HomePage() {
                   Von Workwear & Teamsport bis Carwrapping, Schaufenster & Werbetafeln – wir produzieren langlebige Qualität und beraten dich persönlich.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href="/kontakt" className="rounded-lg w-50 bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:bg-indigo-900 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:active:bg-indigo-700 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950">
-                    Offerte anfragen
+                  <Link href="/kontakt" className="btn btn-primary">
+                  Offerte Anfragen
                   </Link>
-                  <Link href="/downloads" className="rounded-lg w-50 border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-fuchsia-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:bg-fuchsia-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-fuchsia-600 dark:hover:text-white dark:active:bg-fuchsia-700 dark:focus-visible:ring-fuchsia-400 dark:focus-visible:ring-offset-gray-950">
+                  <Link href="/downloads" className="btn btn-secondary">
                     Katalog & Preislisten
                   </Link>
                 </div>
@@ -126,13 +126,13 @@ export default async function HomePage() {
           href: "/textilverkauf",
           title: "Textilverkauf",
           desc: "T-Shirts, Workwear, Teamsport, Arbeitsbekleidung",
-          img: "/images/services/textilverkauf.webp",
+          img: "/images/services/showroom.webp",
         },
         {
           href: "/werbetechnik",
           title: "Werbetechnik",
           desc: "Schaufenster, Sichtschutz, Banner/Tafeln, UV-Druck, Sticker",
-          img: "/images/services/werbetechnik.webp",
+          img: "/images/werbetechnik/stickers/sticker.webp",
         },
         {
           href: "/fahrzeugbeschriftung",
@@ -179,7 +179,7 @@ export default async function HomePage() {
         <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
           <div className="flex items-end justify-between">
             <h2 id="gallery-heading" className="text-2xl font-bold text-gray-900 dark:text-white">Aktuelle Arbeiten</h2>
-            <Link href="/galerie" className="text-sm font-semibold text-indigo-700 underline underline-offset-2 transition hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200">
+            <Link href="/galerie" className="btn btn-primary">
               Alle ansehen
             </Link>
           </div>
@@ -246,7 +246,7 @@ export default async function HomePage() {
               Bereit für ein Angebot? Wir beraten dich zu Technik, Timing & Kosten.
             </p>
             <div className="flex gap-3">
-              <Link href="/kontakt" className="rounded-lg bg-white px-5 py-3 font-semibold text-indigo-800 shadow transition hover:bg-gray-100">
+              <Link href="/kontakt" className="btn btn-primary">
                 Offerte anfragen
               </Link>
               <a href="tel:+410000000" className="rounded-lg border border-white/70 px-5 py-3 font-semibold text-white transition hover:bg-white/10">

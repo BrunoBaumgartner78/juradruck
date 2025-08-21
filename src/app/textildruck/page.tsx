@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function TextildruckPage() {
   const slides: Slide[] = [
     {
-      src: "/images/hero/textilveredelung.webp",
+      src: "/images/textildruck/showroom.webp",
       alt: "Textildruck: kräftige Farben auf T‑Shirts",
       caption: "Kräftige Farben & langlebige Qualität",
     },
@@ -23,7 +23,7 @@ export default function TextildruckPage() {
       caption: "Siebdruck für Serien & Teams",
     },
     {
-      src: "/images/hero/textilverkauf.webp", // <— passe an/lege in public ab
+      src: "/images/textildruck/stickerei.webp", // <— passe an/lege in public ab
       alt: "Edle Stickerei auf Workwear",
       caption: "Stickerei mit Premium-Look",
     },
@@ -55,7 +55,7 @@ export default function TextildruckPage() {
       key: "stick",
       title: "Stickerei",
       desc: "Edle Optik mit 3D‑Effekt. Besonders langlebig auf Caps, Jacken & Polos.",
-      img: "/images/services/fahrzeugbeschriftung.webp",
+      img: "/images/textildruck/stickerei.webp",
       bullet: ["Premium-Look", "Extrem langlebig", "Für Workwear & Caps"],
     },
   ]
@@ -94,14 +94,12 @@ export default function TextildruckPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/kontakt"
-                  className="rounded-lg bg-indigo-700 px-5 py-3 text-white shadow transition-colors hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-950"
-                >
+className="btn btn-primary">
                   Offerte anfragen
                 </Link>
                 <Link
                   href="/downloads"
-                  className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-gray-600 dark:focus-visible:ring-offset-gray-950"
-                >
+className="btn btn-secondary">
                   Kataloge & Preislisten
                 </Link>
               </div>
@@ -175,17 +173,16 @@ export default function TextildruckPage() {
             </h2>
             <Link
               href="/galerie"
-              className="text-sm font-semibold text-indigo-700 underline underline-offset-2 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
-            >
+className="btn btn-primary">
               Galerie ansehen
             </Link>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { t: "Workwear & Firmenkleidung", img: "/images/portfolio/textildruck.webp" },
-              { t: "Vereine & Teamsport", img: "/images/portfolio/textilverkauf.webp" },
-              { t: "Events & Merchandise", img: "/images/portfolio/werbetechnik.webp" },
+              { t: "Workwear & Firmenkleidung", img: "/images/textildruck/showroom.webp" },
+              { t: "Vereine & Teamsport", img: "/images/textildruck/teamsport.webp" },
+              { t: "Events & Merchandise", img: "/images/textildruck/merchandise.webp" },
             ].map((c) => (
               <figure
                 key={c.t}
@@ -232,14 +229,12 @@ export default function TextildruckPage() {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="/kontakt"
-              className="rounded-lg bg-indigo-700 px-5 py-3 text-white shadow transition hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"
-            >
+className="btn btn-primary">
               Angebot einholen
             </Link>
             <Link
               href="/downloads"
-              className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-gray-900 shadow-sm transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-gray-600 dark:focus-visible:ring-offset-gray-900"
-            >
+className="btn btn-secondary">
               Kataloge & Farben
             </Link>
           </div>
