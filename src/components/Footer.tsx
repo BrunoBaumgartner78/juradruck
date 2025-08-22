@@ -120,7 +120,7 @@ export default function Footer() {
 
             <div className="mt-4">
               <Link
-                href="/"
+                href="/kontakt"
                 className="inline-block rounded-lg bg-indigo-700 px-4 py-2 text-white shadow hover:bg-indigo-800
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50
                            dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus-visible:ring-indigo-300 dark:focus-visible:ring-offset-gray-900"

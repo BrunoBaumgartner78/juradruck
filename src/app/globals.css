@@ -88,13 +88,17 @@ small, .meta { font-size: var(--step--1); }
 /* globals.css */
 
 /* Grundstil für alle Buttons */
+/* globals.css */
+
+/* Grundstil für alle Buttons */
 .btn {
   @apply inline-flex items-center justify-center rounded-lg font-medium
          transition-colors duration-200 focus-visible:outline-none
-         focus-visible:ring-2 focus-visible:ring-offset-2;
-  
-  /* Einheitliche Höhe und Padding */
-  @apply h-11 px-5 text-sm; /* alle Buttons gleich hoch */
+         focus-visible:ring-2 focus-visible:ring-offset-2
+         h-11 px-5 text-sm text-center;
+
+  /* Einheitliche Mindestbreite → alle gleich breit */
+  @apply w-60; /* 10rem, kannst du auf w-40 ändern wenn feste Breite gewünscht ist */
 }
 
 /* Farbvarianten */

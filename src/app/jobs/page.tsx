@@ -101,7 +101,7 @@ export default function JobsPage() {
                 >
                   Initiativ bewerben
                 </a>
-                <a href="/kontakt" className="btn btn-outline">
+                <a href="/kontakt" className="btn btn-secondary">
                   Kontakt & Anfahrt
                 </a>
               </div>
