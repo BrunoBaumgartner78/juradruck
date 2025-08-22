@@ -134,16 +134,16 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-gray-800 dark:text-gray-100">Links</h3>
             <div className="mt-3 grid grid-cols-2 gap-2 text-sm text-gray-700 dark:text-gray-300">
-              <Link href="/" className="hover:underline">Textildruck</Link>
-              <Link href="/" className="hover:underline">Werbetechnik</Link>
-              <Link href="/" className="hover:underline">Fahrzeugbeschriftung</Link>
-              <Link href="/" className="hover:underline">Galerie</Link>
-              <Link href="/" className="hover:underline">Downloads</Link>
-              <Link href="/" className="hover:underline">Über uns</Link>
-              <Link href="/" className="hover:underline">FAQ</Link>
-              <Link href="/" className="hover:underline">Kontakt</Link>
-              <Link href="/" className="hover:underline">Impressum</Link>
-              <Link href="/" className="hover:underline">Datenschutz</Link>
+              <Link href="/textildruck" className="hover:underline">Textildruck</Link>
+              <Link href="/werbetechnik" className="hover:underline">Werbetechnik</Link>
+              <Link href="/fahrzeugbeschriftung" className="hover:underline">Fahrzeugbeschriftung</Link>
+              <Link href="/galerie" className="hover:underline">Galerie</Link>
+              <Link href="/downloads" className="hover:underline">Downloads</Link>
+              <Link href="/ueber-uns" className="hover:underline">Über uns</Link>
+              <Link href="/faq" className="hover:underline">FAQ</Link>
+              <Link href="/kontakt" className="hover:underline">Kontakt</Link>
+              <Link href="/impressum" className="hover:underline">Impressum</Link>
+              <Link href="/datenschutz" className="hover:underline">Datenschutz</Link>
             </div>
           </div>
         </div>

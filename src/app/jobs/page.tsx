@@ -23,7 +23,7 @@ export default function JobsPage() {
   // Firmendaten anpassen, falls nötig
   const company = {
     name: "JuraDruck",
-    email: "jobs@juradruck.ch",
+    email: "info@juradruck.ch",
     phone: "+41 62 794 22 67",
     address: "Marenstrasse 73, 4632 Trimbach",
   };
@@ -194,7 +194,7 @@ export default function JobsPage() {
               {
                 step: "1",
                 title: "Dossier senden",
-                text: "CV, kurz Motivation, evtl. Portfolio/Arbeitsproben an jobs@juradruck.ch.",
+                text: "CV, kurz Motivation, evtl. Portfolio/Arbeitsproben an info@juradruck.ch.",
               },
               {
                 step: "2",

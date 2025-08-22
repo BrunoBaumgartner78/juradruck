@@ -1,7 +1,8 @@
+// src/app/textildruck/page.tsx
 import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
-import HeroSlider, { type Slide } from "@/components/HeroSlider"
+import HeroSlider from "@/components/HeroSlider"
 
 export const metadata: Metadata = {
   title: "Textildruck – JuraDruck | Druck, Stick & Veredelung",
@@ -11,19 +12,20 @@ export const metadata: Metadata = {
 }
 
 export default function TextildruckPage() {
-  const slides: Slide[] = [
+  // Kein Typimport nötig – HeroSlider erwartet ein Array aus { src, alt, caption? }
+  const slides = [
     {
       src: "/images/textildruck/showroom.webp",
       alt: "Textildruck: kräftige Farben auf T‑Shirts",
       caption: "Kräftige Farben & langlebige Qualität",
     },
     {
-      src: "/images/hero/textildruck.webp", // <— passe an/lege in public ab
+      src: "/images/hero/textildruck.webp",
       alt: "Siebdruck auf Hoodies in Serie",
       caption: "Siebdruck für Serien & Teams",
     },
     {
-      src: "/images/textildruck/stickerei.webp", // <— passe an/lege in public ab
+      src: "/images/textildruck/stickerei.webp",
       alt: "Edle Stickerei auf Workwear",
       caption: "Stickerei mit Premium-Look",
     },
@@ -43,13 +45,6 @@ export default function TextildruckPage() {
       desc: "Feine Details & viele Farben ohne Vorkosten. Flexibel bei kleinen und mittleren Mengen.",
       img: "/images/services/textilverkauf.webp",
       bullet: ["Feine Details", "Kleine Auflagen", "Vielseitig"],
-    },
-    {
-      key: "flexflock",
-      title: "Flex/Flock",
-      desc: "Einfarbig, sauber und robust – perfekt für Nummern, Namen und kleine Motive.",
-      img: "/images/services/werbetechnik.webp",
-      bullet: ["Sehr robust", "Kontrastreicher Look", "Personalisierungen"],
     },
     {
       key: "stick",
@@ -92,14 +87,10 @@ export default function TextildruckPage() {
                 Ob Einzelstück oder Serie: Wir veredeln T‑Shirts, Polos, Hoodies, Caps & mehr – mit Verfahren, die zu Motiv, Budget und Einsatz passen.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/kontakt"
-className="btn btn-primary">
+                <Link href="/kontakt" className="btn btn-primary">
                   Offerte anfragen
                 </Link>
-                <Link
-                  href="/downloads"
-className="btn btn-secondary">
+                <Link href="/downloads" className="btn btn-secondary">
                   Kataloge & Preislisten
                 </Link>
               </div>
@@ -110,10 +101,11 @@ className="btn btn-secondary">
               </ul>
             </div>
 
+            {/* KORREKTE Props: heightClasses & autoPlayMs */}
             <HeroSlider
               slides={slides}
-              className="h-72 md:h-[420px]"
-              intervalMs={5000}
+              heightClasses="h-72 md:h-[420px]"
+              autoPlayMs={5000}
             />
           </div>
         </div>
@@ -171,9 +163,7 @@ className="btn btn-secondary">
             <h2 id="examples-heading" className="text-2xl font-bold text-gray-900 dark:text-white">
               Typische Anwendungen
             </h2>
-            <Link
-              href="/galerie"
-className="btn btn-primary">
+            <Link href="/galerie" className="btn btn-primary">
               Galerie ansehen
             </Link>
           </div>
@@ -211,7 +201,7 @@ className="btn btn-primary">
             So läuft’s ab
           </h2>
 
-        <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((st, i) => (
               <li
                 key={st.t}
@@ -227,50 +217,47 @@ className="btn btn-primary">
           </ol>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link
-              href="/kontakt"
-className="btn btn-primary">
+            <Link href="/kontakt" className="btn btn-primary">
               Angebot einholen
             </Link>
-            <Link
-              href="/downloads"
-className="btn btn-secondary">
+            <Link href="/downloads" className="btn btn-secondary">
               Kataloge & Farben
             </Link>
           </div>
         </div>
       </section>
-{/* SEO-Text */}
-<section
-  className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800"
-  aria-labelledby="seo-heading"
->
-  <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
-    <h2 id="seo-heading" className="sr-only">Textildruck – Informationen</h2>
-    <div className="prose prose-gray max-w-none dark:prose-invert">
-      <p>
-        JuraDruck ist Ihr erfahrener Partner für <strong>professionellen Textildruck in der Schweiz</strong>. 
-        Wir veredeln <strong>T-Shirts, Hoodies, Polos, Caps</strong> und <strong>Arbeitskleidung</strong> 
-        mit langlebigen Verfahren wie <strong>Siebdruck</strong>, <strong>Flex- und Flockdruck</strong> 
-        oder hochwertiger <strong>Stickerei</strong>.
-      </p>
-      <p>
-        Ob für <strong>Vereine</strong>, <strong>Firmen</strong>, <strong>Events</strong> oder 
-        <strong>Promotion</strong> – wir liefern präzise Druckergebnisse in kräftigen Farben, 
-        die auch nach vielen Waschgängen bestehen. 
-        Bereits ab kleinen Auflagen realisieren wir individuelle Designs, 
-        bei grösseren Stückzahlen profitieren Sie von attraktiven Staffelpreisen.
-      </p>
-      <p>
-        Dank unserer langjährigen Erfahrung beraten wir Sie bei der Wahl des passenden Druckverfahrens 
-        und der richtigen Textilien. Von <strong>Teamsport-Shirts</strong> über 
-        <strong>Corporate Wear</strong> bis hin zu <strong>Merchandise-Produkten</strong> – 
-        bei JuraDruck erhalten Sie alles aus einer Hand. 
-        Fordern Sie jetzt eine unverbindliche <Link href="/kontakt">Offerte</Link> an.
-      </p>
-    </div>
-  </div>
-</section>
+
+      {/* SEO-Text */}
+      <section
+        className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800"
+        aria-labelledby="seo-heading"
+      >
+        <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
+          <h2 id="seo-heading" className="sr-only">Textildruck – Informationen</h2>
+          <div className="prose prose-gray max-w-none dark:prose-invert">
+            <p>
+              JuraDruck ist Ihr erfahrener Partner für <strong>professionellen Textildruck in der Schweiz</strong>. 
+              Wir veredeln <strong>T-Shirts, Hoodies, Polos, Caps</strong> und <strong>Arbeitskleidung</strong> 
+              mit langlebigen Verfahren wie <strong>Siebdruck</strong>, <strong>Flex- und Flockdruck</strong> 
+              oder hochwertiger <strong>Stickerei</strong>.
+            </p>
+            <p>
+              Ob für <strong>Vereine</strong>, <strong>Firmen</strong>, <strong>Events</strong> oder 
+              <strong>Promotion</strong> – wir liefern präzise Druckergebnisse in kräftigen Farben, 
+              die auch nach vielen Waschgängen bestehen. 
+              Bereits ab kleinen Auflagen realisieren wir individuelle Designs, 
+              bei grösseren Stückzahlen profitieren Sie von attraktiven Staffelpreisen.
+            </p>
+            <p>
+              Dank unserer langjährigen Erfahrung beraten wir Sie bei der Wahl des passenden Druckverfahrens 
+              und der richtigen Textilien. Von <strong>Teamsport-Shirts</strong> über 
+              <strong>Corporate Wear</strong> bis hin zu <strong>Merchandise-Produkten</strong> – 
+              bei JuraDruck erhalten Sie alles aus einer Hand. 
+              Fordern Sie jetzt eine unverbindliche <Link href="/kontakt">Offerte</Link> an.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* SEO‑Schema */}
       <script

@@ -4,15 +4,15 @@ import Link from "next/link"
 import { safeFetch, hasSanityConfig } from "@/lib/sanity.client"
 import { downloadsQuery } from "@/lib/sanity.queries"
 
-// src/app/downloads/page.tsx (nur Typdefinition oben anpassen)
 type DownloadItem = {
   _id: string
   title: string
-  fileUrl: string
-  img?: string | null   // ← passt zum neuen Query-Feld
-  tag?: string | null   // (optional, falls du category separat mappen willst)
+  fileUrl: string | null
+  img?: string | null
+  tag?: string | null
+  description?: string | null
+  size?: string | null
 }
-
 
 export const revalidate = 300
 
@@ -24,7 +24,9 @@ export default async function DownloadsPage() {
     <section className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex items-end justify-between">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Downloads</h1>
-        <Link href="/" className="text-sm text-indigo-700 underline dark:text-indigo-300">Zurück</Link>
+        <Link href="/" className="text-sm text-indigo-700 underline dark:text-indigo-300">
+          Zurück
+        </Link>
       </div>
 
       {!hasSanityConfig && (
@@ -36,15 +38,22 @@ export default async function DownloadsPage() {
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.length === 0
           ? Array.from({ length: 6 }).map((_, i) => (
-              <li key={i} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+              <li
+                key={i}
+                className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                aria-busy="true"
+              >
                 <div className="relative h-40 w-full overflow-hidden rounded-lg bg-gray-100 animate-pulse dark:bg-gray-800" />
                 <div className="mt-3 h-5 w-2/3 rounded bg-gray-100 animate-pulse dark:bg-gray-800" />
                 <div className="mt-2 h-4 w-1/3 rounded bg-gray-100 animate-pulse dark:bg-gray-800" />
               </li>
             ))
           : items.map((item) => (
-              <li key={item._id} className="group rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-colors hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-                <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
+              <li
+                key={item._id}
+                className="group rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-colors hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+              >
+                <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg">
                   {item.img ? (
                     <Image
                       src={item.img}
@@ -64,14 +73,25 @@ export default async function DownloadsPage() {
                 </div>
 
                 <h3 className="mt-3 font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                {item.description && (
-                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{item.description}</p>
-                )}
+
+                {item.description ? (
+                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+                    {item.description}
+                  </p>
+                ) : null}
+
+                {item.size ? (
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400" aria-label={`Dateigröße ${item.size}`}>
+                    {item.size}
+                  </p>
+                ) : null}
+
                 <Link
-                  href={item.fileUrl || "#"}
+                  href={item.fileUrl ?? "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800"
+                  aria-label={`${item.title} öffnen`}
                 >
                   Öffnen
                 </Link>

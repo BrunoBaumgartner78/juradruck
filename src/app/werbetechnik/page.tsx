@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/werbetechnik" },
 }
 
-// Hero-Slider-Bilder (du kannst die Pfade jederzeit anpassen/ergänzen)
+// Hero-Slider-Bilder
 const heroSlides = [
   { src: "/images/werbetechnik/werbeplane.webp", alt: "Großformatdruck auf Werbeplane" },
   { src: "/images/werbetechnik/werbeplane2.webp", alt: "Werbeplane auf dem Bearbeitungstisch" },
-  { src: "/images/werbetechnik/werbeplane1.webp", alt: "Werbeplane montage der Oesen" },
+  { src: "/images/werbetechnik/werbeplane1.webp", alt: "Werbeplane – Montage der Ösen" },
 ]
 
-// Helper: Kategorie-Abschnitt mit 3 Bildern
+// Helper: Kategorie-Abschnitt mit 3 Bildern (typsicheres Alt-Mapping)
 function CategorySection({
   id,
   title,
@@ -33,7 +33,11 @@ function CategorySection({
   basePath: string // z.B. "/images/werbetechnik/schaufenster"
   alts: [string, string, string]
 }) {
-  const images = [1, 2, 3].map((n) => `${basePath}/${n}.webp`)
+  const images: { src: string; alt: string }[] = [1, 2, 3].map((n, i) => ({
+    src: `${basePath}/${n}.webp`,
+    alt: alts[i] ?? title, // Fallback garantiert string
+  }))
+
   return (
     <section className="bg-white dark:bg-gray-950" aria-labelledby={id}>
       <div className="container mx-auto max-w-7xl px-4 py-12 md:px-6">
@@ -43,14 +47,14 @@ function CategorySection({
         <p className="mt-2 text-gray-700 dark:text-gray-300">{intro}</p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((src, i) => (
+          {images.map((img) => (
             <figure
-              key={src}
+              key={img.src}
               className="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 shadow-card dark:border-gray-800"
             >
               <Image
-                src={src}
-                alt={alts[i]}
+                src={img.src}
+                alt={img.alt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -66,13 +70,12 @@ function CategorySection({
 export default function WerbetechnikPage() {
   return (
     <>
-      {/* HERO mit Slider – gleiche Farbstimmung wie Textildruck (Indigo) */}
+      {/* HERO mit Slider */}
       <section
         className="relative isolate bg-white dark:bg-gray-950"
         aria-labelledby="wt-hero-heading"
         role="region"
       >
-        {/* Indigo-Gradient wie bei Textildruck */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-indigo-50/70 to-white dark:from-indigo-950/20 dark:to-gray-950" />
         <div className="container mx-auto max-w-7xl px-4 py-16 md:px-6">
           <div className="grid items-center gap-10 md:grid-cols-2">
@@ -91,18 +94,14 @@ export default function WerbetechnikPage() {
                 Qualität, Beratung & Montage inklusive.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/kontakt"
-className="btn btn-primary">                
+                <Link href="/kontakt" className="btn btn-primary">
                   Offerte anfragen
                 </Link>
-                <Link
-                  href="/werbetechnik/planen"
-className="btn btn-secondary">                
+                <Link href="/werbetechnik/planen" className="btn btn-secondary">
                   Werbeplane konfigurieren
                 </Link>
               </div>
-                <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700 dark:text-gray-300">
                 <li>• Datencheck inklusive</li>
                 <li>• Express möglich</li>
                 <li>• Verschiedene Ausführungen</li>

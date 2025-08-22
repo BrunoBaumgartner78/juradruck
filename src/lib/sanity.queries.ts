@@ -15,22 +15,6 @@ export const galleryQuery = groq`
   }
 `
 
-/** Downloads: PDFs etc. */
-// src/lib/sanity.queries.ts (Ausschnitt) – Downloads-Query ersetzen
-export const downloadsQuery = /* groq */ `
-*[_type == "downloadDoc"] | order(coalesce(publishedAt,_createdAt) desc){
-  _id,
-  title,
-  description,
-  size,
-  category,
-  publishedAt,
-  "fileUrl": file.asset->url,
-  // 🔵 NEU: Bild-URL mitnehmen
-  "img": image.asset->url
-}
-`;
-
 
 /** Blog: Liste */
 export const postsQuery = groq`
@@ -61,4 +45,25 @@ export const postBySlugQuery = groq`
     "author": author->{ name, "image": image.asset->url },
     seo
   }
+`
+// src/lib/sanity.queries.ts (Auszug)
+export const downloadsQuery = /* groq */ `
+*[_type == "downloadDoc"] | order(coalesce(publishedAt,_createdAt) desc){
+  _id,
+  title,
+  description,
+  size,
+  category,
+  publishedAt,
+  "fileUrl": file.asset->url,
+  // optionales Vorschau-Bild, falls Feld "image" existiert; sonst null
+  "img": coalesce(image.asset->url, null),
+  // Badge/Tag (z. B. aus category)
+  "tag": select(
+    category == "katalog" => "Katalog",
+    category == "preisliste" => "Preisliste",
+    category == "datenblatt" => "Datenblatt",
+    "PDF"
+  )
+}
 `
