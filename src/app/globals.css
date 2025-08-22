@@ -1,6 +1,10 @@
 /* src/app/globals.css */
 @config "../../tailwind.config.ts";
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 :root {
   --step--1: clamp(.82rem, calc(.80rem + .2vw), .9rem);

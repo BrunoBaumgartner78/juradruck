@@ -1,10 +1,8 @@
-// src/app/studio/[[...tool]]/page.tsx
 'use client'
-import dynamic from 'next/dynamic'
-import config from '../../../../sanity.config'
 
-const Studio = dynamic(() => import('next-sanity/studio').then(m => m.NextStudio), { ssr: false })
+import { NextStudio } from 'next-sanity/studio'
+import config from '@/sanity/config'
 
 export default function StudioPage() {
-  return <Studio config={config} />
+  return <NextStudio config={config} />
 }
